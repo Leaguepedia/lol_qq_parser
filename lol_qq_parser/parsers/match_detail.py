@@ -185,6 +185,7 @@ def match_detail_to_lol_series(
                     series_dto.LolQQPlayerSource(
                         id=player_info.playerId,
                         picture_url=player_info.playerAvatar,
+                        name=lol_qq_parser.utils.get_player_name(player_info.playerId, match_detail.data.seasonId),
                     ),
                 )
 

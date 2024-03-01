@@ -3,7 +3,7 @@ import pytest
 import json
 import pydantic
 
-match_id_list = [8108, 8269]
+match_id_list = [8108, 8269, 10787]
 
 
 @pytest.mark.parametrize("match_id", match_id_list)
@@ -93,6 +93,7 @@ def test_create_lol_series(request, match_id):
 
             for player in team.players:
                 assert player.sources.qq.id
+                assert player.sources.qq.name
 
                 assert player.championId
                 assert player.role in ["TOP", "JGL", "MID", "BOT", "SUP"]

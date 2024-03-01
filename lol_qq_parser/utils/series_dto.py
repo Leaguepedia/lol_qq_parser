@@ -8,6 +8,7 @@ from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 @dataclass
 class LolQQPlayerSource:
     id: int
+    name: str
     picture_url: str
 
 

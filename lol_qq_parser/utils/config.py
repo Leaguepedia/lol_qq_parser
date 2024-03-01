@@ -11,6 +11,12 @@ class Endpoints:
 
     match_detail = "v1/compound/matchDetail"
 
+    player = "v1/compound/player"
+
     @classmethod
     def get_match_detail_url(cls, matchId: int):
         return f"{cls.match_detail}?matchId={matchId}"
+
+    @classmethod
+    def get_player_data_url(cls, seasonId: int, playerId: int):
+        return f"{cls.player}?seasonId={seasonId}&playerIds={playerId}"
