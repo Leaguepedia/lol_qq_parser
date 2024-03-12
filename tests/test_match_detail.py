@@ -54,6 +54,16 @@ def test_not_validate_match():
         lol_qq_parser.schemas.match_detail.Model(**{"Hello": "World"})
 
 
+def test_invalid_player_id():
+    """
+    Make sure None is returned if an invalid player is queried through the players API
+    """
+    from lol_qq_parser.utils import get_player_name
+
+    player_name = get_player_name(9999999999999999, 99999999999999)
+    assert player_name is None
+
+
 @pytest.mark.parametrize("match_id", match_id_list)
 def test_create_lol_series(request, match_id):
     """
