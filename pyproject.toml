@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lol_qq_parser"
-version = "0.1.3"
+version = "0.1.4"
 description = "A League of Legends parser for QQ data"
 authors = ["mrtolkien <gary.mialaret@gmail.com>"]
 license = "GPLv3"
