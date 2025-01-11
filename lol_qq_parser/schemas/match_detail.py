@@ -117,6 +117,7 @@ class TeamInfo(BaseModel):
     baronIncome: List[int]
     inhibitKills: int
     teamSide: str
+    voidGrubAmount: int
 
 
 class MatchInfo(BaseModel):

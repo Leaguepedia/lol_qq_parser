@@ -103,6 +103,7 @@ def match_detail_to_lol_series(
                     firstRiftHerald=team_info.isFirstRiftHerald,
                     firstTurret=team_info.isFirstTurret,
                     turretKills=team_info.turretAmount,
+                    hordeKills=team_info.voidGrubAmount, # no support for firstHorde
                 ),
             )
 

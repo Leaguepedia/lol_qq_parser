@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lol_qq_parser"
-version = "0.1.4"
+version = "0.1.5"
 description = "A League of Legends parser for QQ data"
 authors = ["mrtolkien <gary.mialaret@gmail.com>"]
 license = "GPLv3"
@@ -8,7 +8,7 @@ license = "GPLv3"
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.27.1"
-lol-dto = "^2.0.0"
+lol-dto = {git = "https://git.arbolitoloco.xyz/arbolitoloco/lol_dto.git"}
 pydantic = "^1.9.0"
 
 [tool.poetry.dev-dependencies]

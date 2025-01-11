@@ -3,7 +3,7 @@ import pytest
 import json
 import pydantic
 
-match_id_list = [8108, 8269, 10787]
+match_id_list = [8108, 8269, 10787, 11365]
 
 
 @pytest.mark.parametrize("match_id", match_id_list)
@@ -94,6 +94,7 @@ def test_create_lol_series(request, match_id):
             team = getattr(game.teams, side)
 
             assert team.sources.qq.id
+            assert isinstance(team.endOfGameStats.hordeKills, int)
 
             if team.sources.qq.tag not in score:
                 score[team.sources.qq.tag] = 0
