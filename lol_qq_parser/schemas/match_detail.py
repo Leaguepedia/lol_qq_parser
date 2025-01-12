@@ -118,6 +118,7 @@ class TeamInfo(BaseModel):
     inhibitKills: int
     teamSide: str
     voidGrubAmount: int
+    riftHeraldAmount: int
 
 
 class MatchInfo(BaseModel):

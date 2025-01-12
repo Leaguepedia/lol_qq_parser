@@ -95,6 +95,7 @@ def test_create_lol_series(request, match_id):
 
             assert team.sources.qq.id
             assert isinstance(team.endOfGameStats.hordeKills, int)
+            assert isinstance(team.endOfGameStats.riftHeraldKills, int)
 
             if team.sources.qq.tag not in score:
                 score[team.sources.qq.tag] = 0

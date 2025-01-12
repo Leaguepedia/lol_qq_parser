@@ -101,6 +101,7 @@ def match_detail_to_lol_series(
                     inhibitorKills=team_info.inhibitKills,
                     firstInhibitor=team_info.isFirstInhibitor,
                     firstRiftHerald=team_info.isFirstRiftHerald,
+                    riftHeraldKills=team_info.riftHeraldAmount,
                     firstTurret=team_info.isFirstTurret,
                     turretKills=team_info.turretAmount,
                     hordeKills=team_info.voidGrubAmount, # no support for firstHorde
