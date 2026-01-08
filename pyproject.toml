@@ -8,7 +8,7 @@ license = "GPLv3"
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.27.1"
-lol-dto = {git = "https://git.arbolitoloco.xyz/arbolitoloco/lol_dto.git"}
+lol-dto = {git = "https://github.com/Leaguepedia/lol_dto.git"}
 pydantic = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
