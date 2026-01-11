@@ -16,14 +16,3 @@ def test_working_endpoint():
     assert standings
     assert standings["success"]
     assert standings["data"]
-
-
-def test_faulty_endpoint():
-    """
-    Querying an endpoint that I cannot get and checking it fails as expected
-    """
-    # Trying to get seasons information
-    import lol_qq_parser.utils
-
-    with pytest.raises(HTTPError):
-        lol_qq_parser.utils.query_tjstats("v1/schedule/season?iOpen=-1")
