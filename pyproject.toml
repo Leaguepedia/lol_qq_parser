@@ -6,18 +6,17 @@ authors = ["mrtolkien <gary.mialaret@gmail.com>"]
 license = "GPLv3"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.27.1"
+python = "^3.10"
+requests = "^2.32.0"
 lol-dto = {git = "https://github.com/Leaguepedia/lol_dto.git"}
-pydantic = "^1.9.0"
+pydantic = "^2.12.0"
 
-[tool.poetry.dev-dependencies]
-black = "^21.12b0"
-pytest = "^6.2.5"
-pandas = "^1.3.5"
-datamodel-code-generator = "^0.11.15"
-fastapi = "^0.70.1"
-orjson = "^3.6.5"
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.0"
+pandas = "^2.3.0"
+datamodel-code-generator = "^0.52.0"
+fastapi = "^0.128.0"
+orjson = "^3.11.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
