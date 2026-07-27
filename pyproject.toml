@@ -1,13 +1,12 @@
 [tool.poetry]
 name = "lol_qq_parser"
-version = "0.1.6"
+version = "0.2.0"
 description = "A League of Legends parser for QQ data"
 authors = ["mrtolkien <gary.mialaret@gmail.com>"]
 license = "GPLv3"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "^2.32.0"
 lol-dto = {git = "https://github.com/Leaguepedia/lol_dto.git"}
 pydantic = "^2.12.0"
 

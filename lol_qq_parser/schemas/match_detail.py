@@ -135,25 +135,14 @@ class MatchInfo(BaseModel):
 
 
 class Data(BaseModel):
-    matchId: int
-    matchName: str
-    seasonId: int
-    seasonName: str
-    stageId: int
-    stageName: str
-    gameMode: str
-    matchTime: str
-    matchStatus: int
     matchWin: int
     teamAId: int
-    teamAName: str
     teamAScore: int
     teamBId: int
-    teamBName: str
     teamBScore: int
     matchInfos: List[MatchInfo]
+    gridSeriesId: int = None
 
 
 class Model(BaseModel):
     data: Data
-    success: bool

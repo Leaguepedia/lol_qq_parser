@@ -16,14 +16,11 @@ from lol_qq_parser.utils import series_dto
 # I'm not satisfied with the above imports structure, still kinda struggling with VScode organization
 
 
-def get_series_basic_info(match_id: int) -> series_dto.LolQQSeries:
+def get_series_basic_info(match_detail_raw: dict) -> series_dto.LolQQSeries:
     """
-    This takes a matchId (tjstats) or bmid (qq.com) and returns basic information about
+    This takes Tencent end state data and returns basic information about
     all games in the series
     """
-    # Querying tjstats for the raw information
-    match_detail_raw = get_match_detail_raw(match_id)
-
     # Validating that it conforms to our schema, pydantic raises on errors
     match_detail = lol_qq_parser.schemas.match_detail.Model(**match_detail_raw)
 
@@ -33,30 +30,15 @@ def get_series_basic_info(match_id: int) -> series_dto.LolQQSeries:
     return series
 
 
-def get_match_detail_raw(match_id: int) -> dict:
-    """
-    This returns the raw match detail endpoint data
-    """
-    match_detail_url = lol_qq_parser.utils.Endpoints.get_match_detail_url(match_id)
-
-    return lol_qq_parser.utils.query_tjstats(match_detail_url)
-
-
 def match_detail_to_lol_series(
     match_detail: lol_qq_parser.schemas.match_detail.Model,
 ) -> series_dto.LolQQSeries:
 
-    # We get the winner's name and create a readable score
-    if match_detail.data.matchWin == match_detail.data.teamAId:
-        series_winner = match_detail.data.teamAName
-    elif match_detail.data.matchWin == match_detail.data.teamBId:
-        series_winner = match_detail.data.teamBName
-    else:
-        raise ValueError("Series winner could not be found in the participating teams")
+    series_winner = match_detail.data.matchWin
 
     series_score = {
-        match_detail.data.teamAName: match_detail.data.teamAScore,
-        match_detail.data.teamBName: match_detail.data.teamBScore,
+        match_detail.data.teamAId: match_detail.data.teamAScore,
+        match_detail.data.teamBId: match_detail.data.teamBScore,
     }
 
     # We set the series object without the games first
@@ -69,13 +51,13 @@ def match_detail_to_lol_series(
     # But it creates series.sources.qq.matchId as well as basic teams information
     setattr(
         lol_series.sources,
-        lol_qq_parser.utils.Config.source_prefix,
+        "qq",
         series_dto.LolQQSeriesSource(
-            matchId=match_detail.data.matchId,
+            matchId=0,
+            gridSeriesId=match_detail.data.gridSeriesId,
             teams=[
                 series_dto.LolQQTeamSource(
-                    id=getattr(match_detail.data, f"team{team_tag}Id"),
-                    tag=getattr(match_detail.data, f"team{team_tag}Name"),
+                    id=getattr(match_detail.data, f"team{team_tag}Id")
                 )
                 for team_tag in ("A", "B")
             ],
@@ -110,12 +92,9 @@ def match_detail_to_lol_series(
 
             setattr(
                 lol_team.sources,
-                lol_qq_parser.utils.Config.source_prefix,
+                "qq",
                 series_dto.LolQQTeamSource(
                     id=team_info.teamId,
-                    tag=match_detail.data.teamAName
-                    if team_info.teamId == match_detail.data.teamAId
-                    else match_detail.data.teamBName,
                 ),
             )
 
@@ -183,11 +162,11 @@ def match_detail_to_lol_series(
 
                 setattr(
                     lol_player.sources,
-                    lol_qq_parser.utils.Config.source_prefix,
+                    "qq",
                     series_dto.LolQQPlayerSource(
                         id=player_info.playerId,
                         picture_url=player_info.playerAvatar,
-                        name=lol_qq_parser.utils.get_player_name(player_info.playerId, match_detail.data.seasonId),
+                        name=player_info.playerName,
                     ),
                 )
 

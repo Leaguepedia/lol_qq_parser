@@ -3,45 +3,22 @@ import pytest
 import json
 import pydantic
 
-match_id_list = [8108, 8269, 10787, 11365]
-
-
-@pytest.mark.parametrize("match_id", match_id_list)
-def test_get_match_raw(request, match_id):
-    """
-    Tests the endpoint called matchDetail and dumps the raw JSON
-    """
-    from lol_qq_parser.parsers.match_detail import get_match_detail_raw
-
-    raw_dump_folder = os.path.join("data", "matchDetail")
-    os.makedirs(raw_dump_folder, exist_ok=True)
-
-    match_detail_raw = get_match_detail_raw(match_id)
-
-    assert match_detail_raw["success"]
-
-    raw_dump_file = os.path.join(raw_dump_folder, f"{match_id}.json")
-
-    with open(raw_dump_file, "w+") as file:
-        json.dump(match_detail_raw, file)
-
-    # Using the pytest cache to pass data from test to test in this file
-    request.config.cache.set(f"{match_id}_raw", match_detail_raw)
+match_id_list = [8108, 8269, 10787, 11365, 2975393]
 
 
 @pytest.mark.parametrize("match_id", match_id_list)
 def test_validate_match(request, match_id):
     import lol_qq_parser.schemas.match_detail
 
-    # Getting the raw match details
-    match_detail_raw = request.config.cache.get(f"{match_id}_raw", None)
+    raw_dump_folder = os.path.join("data", "matchDetail")
+    with open(file=os.path.join(raw_dump_folder, f"{match_id}.json"), mode="r+") as f:
+        match_detail_raw = json.load(f)
 
     assert match_detail_raw
 
-    match_detail = lol_qq_parser.schemas.match_detail.Model(**match_detail_raw)
+    lol_qq_parser.schemas.match_detail.Model(**match_detail_raw)
 
-    # This validates that matchId was properly cast to an integer
-    assert match_detail.data.matchId == match_id
+    request.config.cache.set(f"{match_id}_raw", match_detail_raw)
 
 
 def test_not_validate_match():
@@ -52,16 +29,6 @@ def test_not_validate_match():
 
     with pytest.raises(pydantic.ValidationError):
         lol_qq_parser.schemas.match_detail.Model(**{"Hello": "World"})
-
-
-def test_invalid_player_id():
-    """
-    Make sure None is returned if an invalid player is queried through the players API
-    """
-    from lol_qq_parser.utils import get_player_name
-
-    player_name = get_player_name(9999999999999999, 99999999999999)
-    assert player_name is None
 
 
 @pytest.mark.parametrize("match_id", match_id_list)
@@ -83,8 +50,6 @@ def test_create_lol_series(request, match_id):
     assert series.winner
     assert series.games
 
-    assert series.sources.qq.matchId
-
     score = {}
 
     for game in series.games:
@@ -97,11 +62,11 @@ def test_create_lol_series(request, match_id):
             assert isinstance(team.endOfGameStats.hordeKills, int)
             assert isinstance(team.endOfGameStats.riftHeraldKills, int)
 
-            if team.sources.qq.tag not in score:
-                score[team.sources.qq.tag] = 0
+            if team.sources.qq.id not in score:
+                score[team.sources.qq.id] = 0
 
             if game.winner == side:
-                score[team.sources.qq.tag] += 1
+                score[team.sources.qq.id] += 1
 
             for player in team.players:
                 assert player.sources.qq.id

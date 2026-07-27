@@ -15,13 +15,13 @@ class LolQQPlayerSource:
 @dataclass
 class LolQQTeamSource:
     id: int
-    tag: str
 
 
 @dataclass
 class LolQQSeriesSource:
     # Also called bmid
     matchId: int
+    gridSeriesId: int
 
     teams: List[LolQQTeamSource]
 
@@ -40,7 +40,7 @@ class LolQQSeries:
     # Name of the winning team
     winner: str = None
 
-    # {'team_name': score}
+    # {'team_id': score}
     # TODO This is a very raw implementation that is honestly a bit stupid
     #   We need to find something better, as we do for sources
-    score: Dict[str, int] = field(default_factory=dict)
+    score: Dict[int, int] = field(default_factory=dict)
